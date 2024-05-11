@@ -19,8 +19,16 @@ func main() {
 		log.Fatal("Problem with config validation: ", errorList)
 	}
 
-	ms := service.New(cfg)
+	kafkaReader, err := bootstrap.KafkaConnect(cfg.KafkaAddr, cfg.KafkaTopic, cfg.KafkaGroupID)
+	if err != nil {
+		log.Fatal("kafka connection:", err)
+	}
+	log.Println("kafka connection: OK")
+
+	ms := service.New(cfg, kafkaReader)
 	h := api.NewHandler(ms)
+
+	go ms.OnCreateUserEvent()
 
 	http.HandleFunc("POST /mail", h.SendMail)
 	err = http.ListenAndServe(":"+cfg.HTTPPort, nil)

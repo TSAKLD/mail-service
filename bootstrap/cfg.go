@@ -13,6 +13,10 @@ type Config struct {
 	GmailPort     string
 
 	HTTPPort string
+
+	KafkaAddr    string
+	KafkaTopic   string
+	KafkaGroupID string
 }
 
 func NewConfig() (*Config, error) {
@@ -24,9 +28,12 @@ func NewConfig() (*Config, error) {
 	return &Config{
 		GmailLogin:    os.Getenv("GMAIL_LOGIN"),
 		GmailPassword: os.Getenv("GMAIL_PASSWORD"),
-		HTTPPort:      os.Getenv("HTTP_PORT"),
 		GmailHost:     os.Getenv("GMAIL_HOST"),
 		GmailPort:     os.Getenv("GMAIL_PORT"),
+		HTTPPort:      os.Getenv("HTTP_PORT"),
+		KafkaAddr:     os.Getenv("KAFKA_ADDR"),
+		KafkaTopic:    os.Getenv("KAFKA_TOPIC"),
+		KafkaGroupID:  os.Getenv("KAFKA_GROUP_ID"),
 	}, nil
 }
 
